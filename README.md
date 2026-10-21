@@ -48,12 +48,16 @@ Small Python scripts do the mechanical parts, so the original text and frontmatt
 - [Claude Code](https://claude.com/claude-code)
 - Python 3.9+
 - An [Obsidian](https://obsidian.md) vault
-- **birdmarks**: the CLI that exports X bookmarks to markdown. <!-- TODO: link to birdmarks -->
-  It reads your X login from your browser (Firefox, Chrome or Safari), so you must be logged in to X there.
+- [**birdmarks**](https://github.com/gitschwifty/birdmarks) by gitschwifty: the CLI that exports X bookmarks
+  to markdown. It reads your X login from your browser (Firefox, Chrome or Safari), so you must be logged
+  in to X there. On Windows, Firefox is the safest choice (recent Chrome versions encrypt cookies in a way
+  such tools often can't read). birdmarks is a separate project and is not bundled here.
 
 ## Install
 
-1. **birdmarks:** download it and put `birdmarks-win-x64.exe` in a folder of its own, e.g. `C:\x-bookmarks`.
+1. **birdmarks:** download `birdmarks-win-x64.exe` from its
+   [latest release](https://github.com/gitschwifty/birdmarks/releases/latest) and put it in a folder of
+   its own, e.g. `C:\x-bookmarks`.
 2. **The skill**, as a Claude Code plugin:
    ```
    /plugin marketplace add ugurtekdal/x-bookmarks-obsidian
