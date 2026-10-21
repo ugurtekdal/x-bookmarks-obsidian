@@ -1,0 +1,14 @@
+{
+  "name": "x-bookmarks-obsidian",
+  "owner": {
+    "name": "Mehmet Uğur Tekdal (Time Doctor)",
+    "url": "https://x.com/timedoctor_nft"
+  },
+  "plugins": [
+    {
+      "name": "x-bookmarks",
+      "source": "./",
+      "description": "Turn your X (Twitter) bookmarks into organized Obsidian notes with summaries, image insights and a personal \"For you\" section."
+    }
+  ]
+}

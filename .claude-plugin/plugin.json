@@ -1,0 +1,13 @@
+{
+  "name": "x-bookmarks",
+  "version": "1.0.0",
+  "description": "Turn your X (Twitter) bookmarks into organized Obsidian notes with summaries, image insights and a personal \"For you\" section.",
+  "author": {
+    "name": "Mehmet Uğur Tekdal (Time Doctor)",
+    "url": "https://x.com/timedoctor_nft"
+  },
+  "homepage": "https://github.com/ugurtekdal/x-bookmarks-obsidian",
+  "repository": "https://github.com/ugurtekdal/x-bookmarks-obsidian",
+  "license": "MIT",
+  "keywords": ["obsidian", "twitter", "x", "bookmarks", "knowledge-management", "second-brain"]
+}
