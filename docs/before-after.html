@@ -54,8 +54,14 @@
   .f4 { background: linear-gradient(200deg, #3a3f7a, #12142b 70%); }
   .frame::before { content: ""; position: absolute; left: 50%; top: 42%; width: 34px; height: 34px; margin-left: -17px;
                    border: 2px solid rgba(255,255,255,.55); border-radius: 50%; }
-  .tmeta { display: flex; justify-content: space-between; color: var(--x-muted); font-size: 14px; margin-top: 14px; }
-  .tmeta .bm { color: var(--x-blue); font-weight: 600; }
+  .tmeta { display: flex; justify-content: space-between; align-items: center; color: var(--x-muted); font-size: 14px; margin-top: 14px; }
+  .tmeta span { display: inline-flex; align-items: center; gap: 6px; }
+  .tmeta svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .tmeta .like { color: #f91880; }
+  .tmeta .like svg { fill: currentColor; stroke: none; }
+  .tmeta .end { gap: 18px; }
+  .tmeta .bm { color: var(--x-blue); }
+  .tmeta .bm svg { fill: currentColor; stroke: none; }
 
   /* ARROW */
   .arrow { display: flex; flex-direction: column; align-items: center; gap: 14px; }
@@ -113,7 +119,16 @@
             <div class="frame f1">Dolly in</div><div class="frame f2">Orbit 360°</div>
             <div class="frame f3">Crane up</div><div class="frame f4">FPV drone</div>
           </div>
-          <div class="tmeta"><span>💬 214</span><span>🔁 1.9K</span><span>♥ 12K</span><span class="bm">🔖 Saved</span></div>
+          <div class="tmeta">
+            <span><svg viewBox="0 0 24 24"><path d="M4.5 11.2c0-3.9 3.2-6.7 7.3-6.7h1.3c4 0 6.9 2.9 6.9 6.6 0 3.9-3.3 6.7-7.4 6.7h-1.1l-4.3 3v-3.6c-1.7-1.2-2.7-3.4-2.7-6z"/></svg>214</span>
+            <span><svg viewBox="0 0 24 24"><path d="M5 9.5V8a2.5 2.5 0 0 1 2.5-2.5H17M14 2.5l3 3-3 3"/><path d="M19 14.5V16a2.5 2.5 0 0 1-2.5 2.5H7M10 21.5l-3-3 3-3"/></svg>1.9K</span>
+            <span class="like"><svg viewBox="0 0 24 24"><path d="M12 20.6s-8.3-4.7-8.3-10.6c0-2.7 2-4.6 4.4-4.6 1.7 0 3.1.9 3.9 2.3.8-1.4 2.2-2.3 3.9-2.3 2.4 0 4.4 1.9 4.4 4.6 0 5.9-8.3 10.6-8.3 10.6z"/></svg>12K</span>
+            <span><svg viewBox="0 0 24 24"><path d="M6 20V11M10.5 20V5M15 20v-6.5M19.5 20V9"/></svg>486K</span>
+            <span class="end">
+              <span class="bm"><svg viewBox="0 0 24 24"><path d="M6 3.5h12a1 1 0 0 1 1 1v16.3l-7-4.6-7 4.6V4.5a1 1 0 0 1 1-1z"/></svg></span>
+              <span><svg viewBox="0 0 24 24"><path d="M12 15V3.8M7.5 8 12 3.5 16.5 8M4.5 14v4.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V14"/></svg></span>
+            </span>
+          </div>
         </div>
       </div>
       <div class="caption">One of 300 bookmarks you'll never find again.</div>
