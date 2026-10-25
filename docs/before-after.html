@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>x-bookmarks before and after</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg1: #0b0f1a; --bg2: #151a2e;
+    --x-bg: #000; --x-text: #e7e9ea; --x-muted: #71767b; --x-line: #2f3336; --x-blue: #1d9bf0;
+    --ob-bg: #1e1e1e; --ob-panel: #262626; --ob-text: #dcddde; --ob-muted: #8a8a8a; --ob-accent: #8b7cf6;
+    --ob-line: #333;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; }
+  body {
+    font-family: Inter, "Segoe UI", sans-serif;
+    background: radial-gradient(1200px 700px at 78% 40%, #2a2350 0%, transparent 60%),
+                radial-gradient(900px 600px at 15% 70%, #10243d 0%, transparent 60%),
+                linear-gradient(135deg, var(--bg1), var(--bg2));
+    color: #fff; display: flex; flex-direction: column; padding: 56px 64px 40px;
+  }
+  header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 36px; }
+  header h1 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; }
+  header h1 span { color: var(--ob-accent); }
+  header p { font-size: 19px; color: #9aa3b8; }
+  .stage { flex: 1; display: grid; grid-template-columns: 510px 1fr 690px; column-gap: 28px; align-items: center; }
+  .label { font-size: 15px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 14px; }
+  .label.before { color: #8b94a8; }
+  .label.after { color: var(--ob-accent); }
+  .caption { margin-top: 36px; font-size: 17px; color: #9aa3b8; }
+
+  /* BEFORE: X bookmark */
+  .pile { position: relative; }
+  .ghost { position: absolute; inset: 0; border-radius: 18px; background: #0a0a0a; border: 1px solid var(--x-line); }
+  .ghost.g1 { transform: translate(10px, 14px) rotate(2deg); opacity: .55; }
+  .ghost.g2 { transform: translate(18px, 26px) rotate(3.5deg); opacity: .3; }
+  .tweet { position: relative; background: var(--x-bg); border: 1px solid var(--x-line); border-radius: 18px;
+           padding: 22px 24px; color: var(--x-text); transform: rotate(-1.2deg); filter: saturate(.85); }
+  .stale { position: absolute; top: -16px; right: 18px; background: #3a2a12; color: #ffb85c; border: 1px solid #6b4a1a;
+           font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; transform: rotate(2deg); }
+  .who { display: flex; gap: 12px; align-items: center; }
+  .avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #ef4444); }
+  .name { font-weight: 700; font-size: 16px; }
+  .handle { color: var(--x-muted); font-size: 15px; }
+  .ttext { margin: 14px 0 14px; font-size: 17px; line-height: 1.45; }
+  .ttext .tag { color: var(--x-blue); }
+  .frames { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; border-radius: 14px; overflow: hidden; }
+  .frame { height: 104px; position: relative; display: flex; align-items: flex-end; padding: 8px 10px;
+           font-size: 12px; font-weight: 600; color: #fff; text-shadow: 0 1px 3px #000; }
+  .f1 { background: linear-gradient(160deg, #1f3b5c, #0d1b2a 70%), #000; }
+  .f2 { background: radial-gradient(circle at 60% 40%, #e0864a, #5a2a1a 70%); }
+  .f3 { background: linear-gradient(0deg, #1b2b1b, #4f7a52 60%, #9cc3a0); }
+  .f4 { background: linear-gradient(200deg, #3a3f7a, #12142b 70%); }
+  .frame::before { content: ""; position: absolute; left: 50%; top: 42%; width: 34px; height: 34px; margin-left: -17px;
+                   border: 2px solid rgba(255,255,255,.55); border-radius: 50%; }
+  .tmeta { display: flex; justify-content: space-between; color: var(--x-muted); font-size: 14px; margin-top: 14px; }
+  .tmeta .bm { color: var(--x-blue); font-weight: 600; }
+
+  /* ARROW */
+  .arrow { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .cmd { font-family: "JetBrains Mono", Consolas, monospace; font-size: 18px; background: #0f1220; border: 1px solid #3b3566;
+         color: #c9c2ff; padding: 10px 16px; border-radius: 10px; box-shadow: 0 0 40px rgba(139,124,246,.25); }
+  .arrow svg { width: 150px; height: 40px; flex-shrink: 0; }
+  .arrow small { color: #8b94a8; font-size: 14px; text-align: center; line-height: 1.4; }
+
+  /* AFTER: Obsidian note */
+  .note { background: var(--ob-bg); border: 1px solid #3a3a3a; border-radius: 14px; overflow: hidden;
+          box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(139,124,246,.15); color: var(--ob-text); }
+  .tabbar { background: #161616; display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--ob-line); }
+  .dots i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #3d3d3d; margin-right: 6px; }
+  .tab { background: var(--ob-bg); padding: 6px 14px; border-radius: 8px 8px 0 0; font-size: 13px; color: #c8c8c8; }
+  .body { padding: 22px 30px 26px; }
+  .title { font-size: 25px; font-weight: 700; margin-bottom: 14px; color: #fff; }
+  .props { display: grid; grid-template-columns: 110px 1fr; row-gap: 7px; font-size: 13.5px; padding-bottom: 14px;
+           border-bottom: 1px solid var(--ob-line); margin-bottom: 14px; }
+  .props .k { color: var(--ob-muted); }
+  .pill { display: inline-block; background: #2d2a45; color: #c9c2ff; padding: 2px 9px; border-radius: 999px; margin-right: 5px; }
+  .pill.high { background: #163a2a; color: #6ee7a8; font-weight: 600; }
+  h3 { font-size: 15.5px; font-weight: 700; color: #fff; margin: 12px 0 6px; }
+  .body p, .body li { font-size: 14.5px; line-height: 1.5; color: #c9c9c9; }
+  .foryou { background: linear-gradient(180deg, rgba(139,124,246,.16), rgba(139,124,246,.06)); border-left: 3px solid var(--ob-accent);
+            border-radius: 8px; padding: 10px 16px 12px; margin: 6px 0 4px; }
+  .foryou h3 { margin-top: 2px; color: #d6d0ff; }
+  .foryou ul { padding-left: 18px; margin: 4px 0 6px; }
+  .foryou b { color: #fff; }
+  .wl { color: #a99cff; }
+  .imgs { display: flex; gap: 10px; align-items: center; }
+  .thumb { width: 64px; height: 40px; border-radius: 5px; }
+  .imgs p { flex: 1; }
+  .fade { margin-top: 10px; color: var(--ob-muted); font-size: 13.5px; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>x-bookmarks <span>→</span> Obsidian</h1>
+    <p>A Claude Code skill · reads text <em>and</em> images · writes notes you'll actually use</p>
+  </header>
+
+  <div class="stage">
+    <div>
+      <div class="label before">Before</div>
+      <div class="pile">
+        <div class="ghost g2"></div><div class="ghost g1"></div>
+        <div class="tweet">
+          <div class="stale">Saved 47 days ago · never opened</div>
+          <div class="who">
+            <div class="avatar"></div>
+            <div><div class="name">Shotlist Lab</div><div class="handle">@shotlist_lab · Sep 14</div></div>
+          </div>
+          <div class="ttext">12 camera moves that make AI video look cinematic 🎬 Prompts for each one in the thread 👇 <span class="tag">#aivideo</span></div>
+          <div class="frames">
+            <div class="frame f1">Dolly in</div><div class="frame f2">Orbit 360°</div>
+            <div class="frame f3">Crane up</div><div class="frame f4">FPV drone</div>
+          </div>
+          <div class="tmeta"><span>💬 214</span><span>🔁 1.9K</span><span>♥ 12K</span><span class="bm">🔖 Saved</span></div>
+        </div>
+      </div>
+      <div class="caption">One of 300 bookmarks you'll never find again.</div>
+    </div>
+
+    <div class="arrow">
+      <div class="cmd">/x-bookmarks</div>
+      <svg viewBox="0 0 150 40"><defs><linearGradient id="g" gradientUnits="userSpaceOnUse" x1="4" y1="20" x2="132" y2="20"><stop offset="0" stop-color="#3b4a6b"/><stop offset="1" stop-color="#8b7cf6"/></linearGradient></defs>
+        <path d="M4 20 H132" stroke="url(#g)" stroke-width="4" stroke-linecap="round"/><path d="M120 8 L140 20 L120 32" fill="none" stroke="#8b7cf6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <small>reads the thread,<br>looks at every image,<br>checks your projects</small>
+    </div>
+
+    <div>
+      <div class="label after">After</div>
+      <div class="note">
+        <div class="tabbar"><span class="dots"><i></i><i></i><i></i></span><span class="tab">2026-09-14-12-camera-moves-ai-video.md</span></div>
+        <div class="body">
+          <div class="title">12 camera moves for cinematic AI video</div>
+          <div class="props">
+            <span class="k">type</span><span><span class="pill">tutorial</span></span>
+            <span class="k">topics</span><span><span class="pill">video-generation</span><span class="pill">prompt-engineering</span></span>
+            <span class="k">value</span><span><span class="pill high">high</span></span>
+            <span class="k">related</span><span class="wl">[[Travel Shorts Channel]]</span>
+          </div>
+          <h3>Summary</h3>
+          <p>According to the author, 12 classic camera moves with a ready prompt for each. The thread covers all 12; the image shows 4 example frames.</p>
+          <div class="foryou">
+            <h3>For you</h3>
+            <p>Your travel shorts open with static shots. This list fixes exactly that.</p>
+            <ul>
+              <li>Turn the 12 prompts into a camera-move preset in your video app</li>
+              <li>Test <b>Orbit 360°</b> and <b>FPV drone</b> on your next city intro</li>
+            </ul>
+            <p><b>First step:</b> render the same scene with 3 moves and compare. (20 min)</p>
+          </div>
+          <h3>From the images</h3>
+          <div class="imgs">
+            <div class="thumb f1" style="background:linear-gradient(160deg,#1f3b5c,#0d1b2a)"></div>
+            <p>A 2×2 grid of example frames: dolly in, orbit, crane up and FPV, each labeled.</p>
+          </div>
+          <div class="fade">▸ Key points · Links · Original text (verbatim)</div>
+        </div>
+      </div>
+      <div class="caption">A note that tells you what it is and what to do with it.</div>
+    </div>
+  </div>
+</body>
+</html>

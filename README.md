@@ -6,8 +6,7 @@ This is a [Claude Code](https://claude.com/claude-code) skill that downloads you
 and turns each one into a clean, searchable Obsidian note: what it is, why it matters, what the images
 actually show, and a personal **"For you"** section that tells you how to use it in *your* work.
 
-<!-- TODO: before/after image: raw bookmark on the left, finished note on the right -->
-![Before and after](docs/before-after.png)
+![Before: a bookmark saved 47 days ago and never opened. After: an Obsidian note with summary, a personal "For you" section and what the images show.](docs/before-after.png)
 
 ## What a note gets
 
