@@ -1,5 +1,8 @@
 {
   "name": "x-bookmarks-obsidian",
+  "metadata": {
+    "description": "Claude Code plugin that turns your X (Twitter) bookmarks into organized Obsidian notes."
+  },
   "owner": {
     "name": "Mehmet Uğur Tekdal (Time Doctor)",
     "url": "https://x.com/timedoctor_nft"
