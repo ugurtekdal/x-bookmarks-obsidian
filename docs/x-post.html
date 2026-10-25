@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>x-bookmarks launch image</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #8b7cf6; --muted: #9aa3b8; --dim: #5d6683; --x-blue: #1d9bf0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 900px; overflow: hidden; }
+  body {
+    font-family: Inter, "Segoe UI", sans-serif; color: #fff; position: relative;
+    background: radial-gradient(900px 700px at 78% 45%, #2a2350 0%, transparent 62%),
+                radial-gradient(700px 500px at 5% 100%, #0f2a3a 0%, transparent 60%),
+                linear-gradient(135deg, #090c16, #141a2e);
+  }
+  .left { position: absolute; left: 80px; top: 92px; width: 760px; }
+  .eyebrow { font-size: 18px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
+  .big { font-size: 250px; font-weight: 900; letter-spacing: -0.05em; line-height: .9; margin: 14px 0 10px -8px;
+         background: linear-gradient(180deg, #ffffff 30%, #9aa3b8); -webkit-background-clip: text; color: transparent; }
+  h1 { font-size: 58px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.08; }
+  h1 .strike { color: var(--muted); }
+  .sub { margin-top: 28px; font-size: 27px; line-height: 1.42; color: #c4c9d8; max-width: 700px; }
+  .sub b { color: #fff; }
+  .sub .p { color: #c9c2ff; }
+
+  .panel { position: absolute; right: 80px; top: 110px; width: 640px; }
+  .mosaic { display: grid; grid-template-columns: repeat(31, 16px); gap: 4.6px; }
+  .mosaic i { width: 16px; height: 16px; display: block; border-radius: 3px;
+              background: #222842; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%); }
+  .mosaic i.on { background: var(--accent); box-shadow: 0 0 10px rgba(139,124,246,.6); }
+  .legend { display: flex; gap: 28px; margin-top: 22px; font-size: 18px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 10px; }
+  .legend i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%); }
+  .legend b { color: #fff; }
+
+  .card { position: absolute; left: -70px; top: 330px; width: 400px; background: #1e1e1e; border: 1px solid #3a3a3a; border-radius: 14px;
+          padding: 18px 20px; box-shadow: 0 30px 70px rgba(0,0,0,.6), 0 0 0 1px rgba(139,124,246,.25); transform: rotate(-2deg); }
+  .card .t { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  .card .fy { border-left: 3px solid var(--accent); background: rgba(139,124,246,.12); border-radius: 6px; padding: 9px 12px; }
+  .card .fy h4 { font-size: 14px; color: #d6d0ff; margin-bottom: 4px; }
+  .card .fy p { font-size: 13.5px; line-height: 1.45; color: #cfcfcf; }
+  .card .pills { margin-top: 10px; display: flex; gap: 6px; }
+  .card .pill { font-size: 12px; background: #2d2a45; color: #c9c2ff; padding: 2px 9px; border-radius: 999px; }
+  .card .pill.h { background: #163a2a; color: #6ee7a8; font-weight: 600; }
+
+  .bar { position: absolute; left: 80px; right: 80px; bottom: 54px; display: flex; align-items: center; justify-content: space-between;
+         padding-top: 24px; border-top: 1px solid #262c45; }
+  .brand { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; }
+  .brand span { color: var(--accent); }
+  .tags { display: flex; gap: 10px; }
+  .tag { font-size: 17px; color: #c4c9d8; border: 1px solid #2f3655; background: #121729; padding: 7px 14px; border-radius: 999px; }
+  .url { font-family: "JetBrains Mono", Consolas, monospace; font-size: 19px; color: #c9c2ff; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="eyebrow">My X bookmarks</div>
+    <div class="big">843</div>
+    <h1>saved for later.<br><span class="strike">“Later” never came.</span></h1>
+    <p class="sub">So I built a <b>Claude Code skill</b> that reads every one, <b>images too</b>, and writes an Obsidian note that tells me <span class="p">what to do with it.</span></p>
+  </div>
+
+  <div class="panel">
+    <div class="mosaic" id="m"></div>
+    <div class="legend">
+      <span><i style="background:#8b7cf6"></i><b>216</b> already turned into notes</span>
+      <span><i style="background:#2a3050"></i>627 to go</span>
+    </div>
+    <div class="card">
+      <div class="t">12 camera moves for cinematic AI video</div>
+      <div class="fy"><h4>For you</h4><p>Your shorts open with static shots. Test Orbit 360° on your next intro. <b style="color:#fff">First step:</b> 20 min.</p></div>
+      <div class="pills"><span class="pill">tutorial</span><span class="pill">video-generation</span><span class="pill h">high</span></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="brand">x-bookmarks <span>→</span> Obsidian</div>
+    <div class="tags"><span class="tag">Free &amp; open source</span><span class="tag">Claude Code skill</span></div>
+    <div class="url">github.com/ugurtekdal/x-bookmarks-obsidian</div>
+  </div>
+
+<script>
+  // 843 tiles, 216 lit; deterministic scatter weighted towards the newest (top) bookmarks
+  const m = document.getElementById('m'); let s = 7;
+  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const idx = [...Array(843).keys()].map(i => [i, rnd() * (1 + i / 300)]).sort((a, b) => a[1] - b[1]).slice(0, 216).map(a => a[0]);
+  const on = new Set(idx);
+  for (let i = 0; i < 843; i++) { const t = document.createElement('i'); if (on.has(i)) t.className = 'on'; m.appendChild(t); }
+</script>
+</body>
+</html>
