@@ -28,15 +28,7 @@ Notes can be written in **English** or **Turkish** (other languages: PRs welcome
 
 ## How it works
 
-```
-X bookmarks ──birdmarks──▶ bookmarks/ (raw, read-only)
-                               │  bookmarks-sync.ps1: only new ones, optionally only selected X folders
-                               ▼
-                           pending/ ──Claude reads text + images──▶ data file
-                                                                       │  build_notes.py
-                                                                       ▼
-                                              Obsidian vault: note + article note + images
-```
+![How it works: 1. bookmark on X, 2. birdmarks downloads new bookmarks to pending, 3. Claude reads text and images and writes the For you section, 4. scripts build the notes and run QA, 5. notes land in your Obsidian vault.](docs/how-it-works.png)
 
 Claude does the parts that need judgment (reading, looking at images, summarizing, "For you").
 Small Python scripts do the mechanical parts, so the original text and frontmatter are always exact.

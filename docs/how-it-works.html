@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>x-bookmarks how it works</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg1: #0b0f1a; --bg2: #151a2e;
+    --card: #14182a; --line: #2a3050; --text: #e6e8f0; --muted: #9aa3b8; --dim: #6b7390;
+    --claude: #8b7cf6; --claude-soft: rgba(139,124,246,.14);
+    --script: #2dd4bf; --script-soft: rgba(45,212,191,.12);
+    --x-blue: #1d9bf0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 680px; overflow: hidden; }
+  body {
+    font-family: Inter, "Segoe UI", sans-serif; color: var(--text);
+    background: radial-gradient(1000px 600px at 60% 30%, #231f47 0%, transparent 60%),
+                radial-gradient(800px 500px at 10% 90%, #0f2a3a 0%, transparent 60%),
+                linear-gradient(135deg, var(--bg1), var(--bg2));
+    padding: 52px 64px 44px; display: flex; flex-direction: column;
+  }
+  header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
+  h1 { font-size: 38px; font-weight: 800; letter-spacing: -0.02em; }
+  h1 span { color: var(--claude); }
+  .legend { display: flex; gap: 22px; font-size: 16px; color: var(--muted); }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 8px; vertical-align: -1px; }
+  .legend .c i { background: var(--claude); }
+  .legend .s i { background: var(--script); }
+
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 34px; position: relative; }
+  .step { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+          padding: 22px 20px 20px; display: flex; flex-direction: column; }
+  .step.claude { border-color: rgba(139,124,246,.55); background: linear-gradient(180deg, var(--claude-soft), var(--card) 55%);
+                 box-shadow: 0 0 50px rgba(139,124,246,.18); }
+  .step.script { border-color: rgba(45,212,191,.4); background: linear-gradient(180deg, var(--script-soft), var(--card) 55%); }
+  .step:not(:last-child)::after {
+    content: ""; position: absolute; right: -27px; top: 50%; width: 20px; height: 20px; margin-top: -10px;
+    background: no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M2 10h14M11 4l6 6-6 6' fill='none' stroke='%236b7390' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .num { font-family: "JetBrains Mono", Consolas, monospace; font-size: 13px; color: var(--dim); margin-bottom: 14px; }
+  .icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 16px;
+          background: #1c2138; border: 1px solid var(--line); }
+  .icon svg { width: 28px; height: 28px; fill: none; stroke: var(--text); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .claude .icon { background: rgba(139,124,246,.2); border-color: rgba(139,124,246,.5); }
+  .claude .icon svg { stroke: #d6d0ff; }
+  .script .icon { background: rgba(45,212,191,.14); border-color: rgba(45,212,191,.4); }
+  .script .icon svg { stroke: #99f6e4; }
+  .x .icon svg { stroke: var(--x-blue); }
+  h2 { font-size: 21px; font-weight: 700; margin-bottom: 4px; }
+  .who { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; color: var(--dim); }
+  .claude .who { color: var(--claude); }
+  .script .who { color: var(--script); }
+  ul { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 18px; }
+  li { font-size: 15px; line-height: 1.4; color: #c4c9d8; padding-left: 16px; position: relative; }
+  li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 2px; background: var(--dim); }
+  .claude li::before { background: var(--claude); }
+  .script li::before { background: var(--script); }
+  code { font-family: "JetBrains Mono", Consolas, monospace; font-size: 13px; color: #e2e5f0; background: #1f2440; padding: 1px 6px; border-radius: 5px; white-space: nowrap; }
+  .out { margin-top: auto; padding-top: 16px; font-size: 13px; color: var(--dim); border-top: 1px dashed var(--line); }
+  .out b { color: var(--muted); font-weight: 600; }
+
+  .safety { margin-top: 30px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .safety .t { font-size: 14px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); margin-right: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: #c4c9d8; background: #141a2c;
+          border: 1px solid var(--line); padding: 8px 14px; border-radius: 999px; }
+  .chip svg { width: 16px; height: 16px; fill: none; stroke: #6ee7a8; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>How it works <span>·</span> judgment by Claude, exactness by scripts</h1>
+    <div class="legend"><span class="c"><i></i>Claude</span><span class="s"><i></i>Scripts</span></div>
+  </header>
+
+  <div class="flow">
+    <div class="step x">
+      <div class="num">01</div>
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M6 3.5h12a1 1 0 0 1 1 1v16.3l-7-4.6-7 4.6V4.5a1 1 0 0 1 1-1z"/></svg></div>
+      <h2>Bookmark on X</h2>
+      <div class="who">You</div>
+      <ul>
+        <li>Save as usual</li>
+        <li>Optional: a folder like <code>To vault</code> for the ones you really want</li>
+      </ul>
+      <div class="out"><b>then run</b> <code>/x-bookmarks</code></div>
+    </div>
+
+    <div class="step script">
+      <div class="num">02</div>
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3.5v11M7.5 10 12 14.5 16.5 10M4.5 15v3.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V15"/></svg></div>
+      <h2>Download</h2>
+      <div class="who">birdmarks + sync script</div>
+      <ul>
+        <li>Threads, quoted tweets, X articles and images as markdown</li>
+        <li>Only new bookmarks, only your folders</li>
+        <li>Raw files stay read-only</li>
+      </ul>
+      <div class="out"><b>out:</b> <code>pending/</code></div>
+    </div>
+
+    <div class="step claude">
+      <div class="num">03</div>
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <h2>Read &amp; understand</h2>
+      <div class="who">Claude</div>
+      <ul>
+        <li>Reads the whole thread and linked article</li>
+        <li>Looks at every image, keeps the useful ones</li>
+        <li>Checks claims, translates if needed</li>
+        <li>Writes "For you" from your profile and projects</li>
+      </ul>
+      <div class="out"><b>out:</b> a small data file per batch</div>
+    </div>
+
+    <div class="step script">
+      <div class="num">04</div>
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M14 3.5H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5z"/><path d="M14 3.5v5h5M9 13h6M9 16.5h4"/></svg></div>
+      <h2>Build notes</h2>
+      <div class="who">build_notes.py · qa.py</div>
+      <ul>
+        <li>Frontmatter in a fixed schema</li>
+        <li>Original text copied verbatim</li>
+        <li>Images copied, duplicates skipped</li>
+        <li>Wikilinks and fields checked</li>
+      </ul>
+      <div class="out"><b>out:</b> notes + a QA report</div>
+    </div>
+
+    <div class="step">
+      <div class="num">05</div>
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2.8 19.5 8l-1.8 9.5L12 21.2 6.3 17.5 4.5 8z"/><path d="M12 2.8 9.5 12l2.5 9.2M9.5 12 19.5 8"/></svg></div>
+      <h2>In your vault</h2>
+      <div class="who">Obsidian</div>
+      <ul>
+        <li>One note per bookmark</li>
+        <li>Separate notes for X articles</li>
+        <li>Topics from your own dictionary</li>
+        <li>Ready for search, graph and Dataview</li>
+      </ul>
+      <div class="out"><b>plus:</b> a run report in chat</div>
+    </div>
+  </div>
+
+  <div class="safety">
+    <span class="t">Built in</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Raw downloads never modified</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No made-up facts, claims attributed</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>No forced "For you" links</span>
+    <span class="chip"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Notes in English or Turkish</span>
+  </div>
+</body>
+</html>
